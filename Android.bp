@@ -85,6 +85,7 @@ cc_library_static {
     cflags: [
         "-Wall",
         "-Wextra",
+        "-Werror",
         "-g",
         "-fvisibility=hidden"
     ],
