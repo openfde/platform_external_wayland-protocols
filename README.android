@@ -1,67 +1,53 @@
-Name: wayland-protocols
-URL: http://wayland.freedesktop.org/
-Version: 1.8
-License: MIT
-License File: src/COPYING
-Security Critical: yes
+These instructions are for the Android external/wayland-protcools repository.
 
-Description:
-wayland-protocols contains Wayland protocols that adds functionality not
-available in the Wayland core protocol. Such protocols either adds
-completely new functionality, or extends the functionality of some other
-protocol either in Wayland core, or some other protocol in
-wayland-protocols.
+## Updating from upstream
 
-To import a new snapshot of wayland-protocols:
-- Checkout the latest release tag: git checkout 1.8
-- Change the DEPS entry to the newly checked out commit.
-- Update generated files:
-    wayland-scanner code < src/unstable/xdg-shell/xdg-shell-unstable-v5.xml > protocol/xdg-shell-v5-protocol.c
-    wayland-scanner server-header < src/unstable/xdg-shell/xdg-shell-unstable-v5.xml > include/protocol/xdg-shell-unstable-v5-server-protocol.h
-    wayland-scanner client-header < src/unstable/xdg-shell/xdg-shell-unstable-v5.xml > include/protocol/xdg-shell-unstable-v5-client-protocol.h
-    wayland-scanner code < src/unstable/xdg-shell/xdg-shell-unstable-v6.xml > protocol/xdg-shell-v6-protocol.c
-    wayland-scanner server-header < src/unstable/xdg-shell/xdg-shell-unstable-v6.xml > include/protocol/xdg-shell-unstable-v6-server-protocol.h
-    wayland-scanner client-header < src/unstable/xdg-shell/xdg-shell-unstable-v6.xml > include/protocol/xdg-shell-unstable-v6-client-protocol.h
-    wayland-scanner code < src/unstable/linux-dmabuf/linux-dmabuf-unstable-v1.xml > protocol/linux-dmabuf-protocol.c
-    wayland-scanner server-header < src/unstable/linux-dmabuf/linux-dmabuf-unstable-v1.xml > include/protocol/linux-dmabuf-unstable-v1-server-protocol.h
-    wayland-scanner client-header < src/unstable/linux-dmabuf/linux-dmabuf-unstable-v1.xml > include/protocol/linux-dmabuf-unstable-v1-client-protocol.h
-    wayland-scanner code < src/stable/viewporter/viewporter.xml > protocol/viewporter-protocol.c
-    wayland-scanner server-header < src/stable/viewporter/viewporter.xml > include/protocol/viewporter-server-protocol.h
-    wayland-scanner client-header < src/stable/viewporter/viewporter.xml > include/protocol/viewporter-client-protocol.h
-    wayland-scanner code < src/stable/presentation-time/presentation-time.xml > protocol/presentation-time-protocol.c
-    wayland-scanner server-header < src/stable/presentation-time/presentation-time.xml > include/protocol/presentation-time-server-protocol.h
-    wayland-scanner client-header < src/stable/presentation-time/presentation-time.xml > include/protocol/presentation-time-client-protocol.h
-    wayland-scanner code < unstable/secure-output/secure-output-unstable-v1.xml > protocol/secure-output-protocol.c
-    wayland-scanner server-header < unstable/secure-output/secure-output-unstable-v1.xml > include/protocol/secure-output-unstable-v1-server-protocol.h
-    wayland-scanner client-header < unstable/secure-output/secure-output-unstable-v1.xml > include/protocol/secure-output-unstable-v1-client-protocol.h
-    wayland-scanner code < unstable/alpha-compositing/alpha-compositing-unstable-v1.xml > protocol/alpha-compositing-protocol.c
-    wayland-scanner server-header < unstable/alpha-compositing/alpha-compositing-unstable-v1.xml > include/protocol/alpha-compositing-unstable-v1-server-protocol.h
-    wayland-scanner client-header < unstable/alpha-compositing/alpha-compositing-unstable-v1.xml > include/protocol/alpha-compositing-unstable-v1-client-protocol.h
-    wayland-scanner code < unstable/remote-shell/remote-shell-unstable-v1.xml > protocol/remote-shell-protocol.c
-    wayland-scanner server-header < unstable/remote-shell/remote-shell-unstable-v1.xml > include/protocol/remote-shell-unstable-v1-server-protocol.h
-    wayland-scanner client-header < unstable/remote-shell/remote-shell-unstable-v1.xml > include/protocol/remote-shell-unstable-v1-client-protocol.h
-    wayland-scanner code < unstable/vsync-feedback/vsync-feedback-unstable-v1.xml > protocol/vsync-feedback-protocol.c
-    wayland-scanner server-header < unstable/vsync-feedback/vsync-feedback-unstable-v1.xml > include/protocol/vsync-feedback-unstable-v1-server-protocol.h
-    wayland-scanner client-header < unstable/vsync-feedback/vsync-feedback-unstable-v1.xml > include/protocol/vsync-feedback-unstable-v1-client-protocol.h
-    wayland-scanner code < unstable/gaming-input/gaming-input-unstable-v1.xml > protocol/gaming-input-protocol-v1.c
-    wayland-scanner server-header < unstable/gaming-input/gaming-input-unstable-v1.xml > include/protocol/gaming-input-unstable-v1-server-protocol.h
-    wayland-scanner client-header < unstable/gaming-input/gaming-input-unstable-v1.xml > include/protocol/gaming-input-unstable-v1-client-protocol.h
-    wayland-scanner code < unstable/gaming-input/gaming-input-unstable-v2.xml > protocol/gaming-input-protocol-v2.c
-    wayland-scanner server-header < unstable/gaming-input/gaming-input-unstable-v2.xml > include/protocol/gaming-input-unstable-v2-server-protocol.h
-    wayland-scanner client-header < unstable/gaming-input/gaming-input-unstable-v2.xml > include/protocol/gaming-input-unstable-v2-client-protocol.h
-    wayland-scanner code < unstable/stylus/stylus-unstable-v1.xml > protocol/stylus-protocol-v1.c
-    wayland-scanner server-header < unstable/stylus/stylus-unstable-v1.xml > include/protocol/stylus-unstable-v1-server-protocol.h
-    wayland-scanner client-header < unstable/stylus/stylus-unstable-v1.xml > include/protocol/stylus-unstable-v1-client-protocol.h
-    wayland-scanner code < unstable/stylus/stylus-unstable-v2.xml > protocol/stylus-protocol-v2.c
-    wayland-scanner server-header < unstable/stylus/stylus-unstable-v2.xml > include/protocol/stylus-unstable-v2-server-protocol.h
-    wayland-scanner client-header < unstable/stylus/stylus-unstable-v2.xml > include/protocol/stylus-unstable-v2-client-protocol.h
-    wayland-scanner code < unstable/keyboard/keyboard-configuration-unstable-v1.xml > protocol/keyboard-configuration-protocol.c
-    wayland-scanner server-header < unstable/keyboard/keyboard-configuration-unstable-v1.xml > include/protocol/keyboard-configuration-unstable-v1-server-protocol.h
-    wayland-scanner client-header < unstable/keyboard/keyboard-configuration-unstable-v1.xml > include/protocol/keyboard-configuration-unstable-v1-client-protocol.h
-    wayland-scanner code < unstable/stylus-tools/stylus-tools-unstable-v1.xml > protocol/stylus-tools-protocol.c
-    wayland-scanner server-header < unstable/stylus-tools/stylus-tools-unstable-v1.xml > include/protocol/stylus-tools-unstable-v1-server-protocol.h
-    wayland-scanner client-header < unstable/stylus-tools/stylus-tools-unstable-v1.xml > include/protocol/stylus-tools-unstable-v1-client-protocol.h
-    wayland-scanner code < unstable/keyboard/keyboard-extension-unstable-v1.xml > protocol/keyboard-extension-protocol.c
-    wayland-scanner server-header < unstable/keyboard/keyboard-extension-unstable-v1.xml > include/protocol/keyboard-extension-unstable-v1-server-protocol.h
-    wayland-scanner client-header < unstable/keyboard/keyboard-extension-unstable-v1.xml > include/protocol/keyboard-extension-unstable-v1-client-protocol.h
-- Update this README to reflect the new version number.
+### Update the freedesktop.org/ directory
+
+  1. Checkout the upstream sources to a working directory if you haven't
+     already with
+     `git clone git://anongit.freedesktop.org/wayland/wayland-protocols`,
+     or otherwise pull down the latest changes if you have a checkout.
+  2. Sync to the desired release tag (`git tag -l` to view them)
+     `git checkout $TAG`
+  3. The freedesktop.org/ directory here should be a simple copy of this
+     checkout. A tool such as `meld` can be used to view and apply the
+     differences.
+     `meld freedesktop.org/ /path/to/freedesktop.org/wayland-protocols/`
+  4. Note that we add NOTICE, MODULE_LICENSE_MIT and METADATA files as part of
+     our policies around open source code. Leave these alone unless there is
+     a reason to change them.
+       * NOTICE should duplicate COPYING from upstream.
+       * MODULE_LICENSE_MIT should match the source code license.
+       * METADATA should indicate the version of the upstream source used, and
+         should be updated to match.
+
+### Update the chromium.org/ directory
+
+  1. Checkout Chromium sources if you haven't already with
+     `git clone https://chromium.googlesource.com/chromium/src.git`, or
+     otherwise pull down the latest changes. This is a large checkout
+     unfortunately, even though we only want a small subset of it.
+  2. Sync to the desired release tag, or just use master if you would like.
+  3. The chromium.org/ directory should ba a **PARTIAL** copy of
+     src/third_party/wayland-protocols from your checkout. In particular these
+     should match:
+       * chromium.org/unstable/ and src/third_party/wayland-protocols/unstable/
+       * chromium.org/LICENSE and src/third_party/wayland-protocols/LICENSE
+       * chromium.org/README.chromium and src/third_party/wayland-protocols/README.chromium
+     We **do not** need:
+       * src/third_party/wayland-protocols/include/ and
+         src/third_party/wayland-protocols/protocol both contain source code
+         generated from the protocol files, which is not needed here.
+       * src/third_party/wayland-protocols/src (if you have it) is itself a clone
+         of a version of the freedesktop.org upstream sources.
+       * src/third_party/wayland-protocols/OWNERS causes trouble with Android
+         Gerrit.
+       * src/third_party/wayland-protocols/BUILD.gn.
+  4. Note that we add NOTICE, MODULE_LICENSE_MIT and METADATA files as part of
+     our policies around open source code. Leave these alone unless there is
+     a reason to change them.
+       * NOTICE should duplicate LICENSE from upstream.
+       * MODULE_LICENSE_MIT should match the source code license.
+       * METADATA should indicate the version of the upstream source used, and
+         should be updated to match.

@@ -12,76 +12,52 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-protocols_files = [
-    "stable/viewporter/viewporter.xml",
-    "unstable/alpha-compositing/alpha-compositing-unstable-v1.xml",
-    "unstable/keyboard/keyboard-configuration-unstable-v1.xml",
-    "unstable/keyboard/keyboard-extension-unstable-v1.xml",
-    "unstable/linux-dmabuf/linux-dmabuf-unstable-v1.xml",
-    "unstable/gaming-input/gaming-input-unstable-v2.xml",
-    "unstable/remote-shell/remote-shell-unstable-v1.xml",
-    "unstable/secure-output/secure-output-unstable-v1.xml",
-    "unstable/stylus/stylus-unstable-v2.xml",
-    "unstable/stylus-tools/stylus-tools-unstable-v1.xml",
-    "unstable/vsync-feedback/vsync-feedback-unstable-v1.xml",
-]
-protocols = [
-    "viewporter.xml",
-    "alpha-compositing-unstable-v1.xml",
-    "keyboard-configuration-unstable-v1.xml",
-    "keyboard-extension-unstable-v1.xml",
-    "linux-dmabuf-unstable-v1.xml",
-    "gaming-input-unstable-v2.xml",
-    "remote-shell-unstable-v1.xml",
-    "secure-output-unstable-v1.xml",
-    "stylus-unstable-v2.xml",
-    "stylus-tools-unstable-v1.xml",
-    "vsync-feedback-unstable-v1.xml",
-]
-protocol_client_headers = [
-    "viewporter-client-protocol.h",
-    "alpha-compositing-unstable-v1-client-protocol.h",
-    "keyboard-configuration-unstable-v1-client-protocol.h",
-    "keyboard-extension-unstable-v1-client-protocol.h",
-    "linux-dmabuf-unstable-v1-client-protocol.h",
-    "gaming-input-unstable-v2-client-protocol.h",
-    "remote-shell-unstable-v1-client-protocol.h",
-    "secure-output-unstable-v1-client-protocol.h",
-    "stylus-unstable-v2-client-protocol.h",
-    "stylus-tools-unstable-v1-client-protocol.h",
-    "vsync-feedback-unstable-v1-client-protocol.h",
-]
-
-// Copy protocol files to intermediate folders
-genrule {
-    name: "wayland_client_protocols",
-    cmd: "cp $(in) $(genDir)",
-    srcs: protocols_files,
-    out: protocols,
-    tool_files:["."],
+// Build and use the "wayland_protocol_codegen" extension.
+bootstrap_go_package {
+    name: "soong-wayland-protocol-codegen",
+    pkgPath: "android/soong/external/wayland-protocol",
+    deps: [
+        "blueprint",
+        "blueprint-proptools",
+        "soong-android",
+        "soong-genrule",
+    ],
+    srcs: [
+        "wayland_protocol_codegen.go",
+    ],
+    pluginFor: ["soong_build"],
 }
 
-// Generate protocol source files
-gensrcs {
-    name: "wayland_client_protocol_sources",
-    output_extension: "c",
+filegroup {
+    name: "wayland_extension_protocols",
+    srcs: [
+        "freedesktop.org/**/*.xml",
+        "chromium.org/**/*.xml",
+    ],
+}
+
+// Generate protocol source files used by both client and server
+wayland_protocol_codegen {
+    name: "wayland_extension_protocol_sources",
     cmd: "$(location wayland_scanner) code < $(in) > $(out)",
-    srcs: [":wayland_client_protocols"],
+    suffix: ".c",
+    srcs: [":wayland_extension_protocols"],
     tools: ["wayland_scanner"],
 }
 
-// Generate protocol header files
-genrule {
-    name: "wayland_client_protocol_headers",
-    cmd: "$(location gen_protocol_headers.sh) $(location wayland_scanner) $(genDir) $(in)",
-    srcs: [":wayland_client_protocols"],
-    out: protocol_client_headers,
+// Generate protocol header files used by the client
+wayland_protocol_codegen {
+    name: "wayland_extension_client_protocol_headers",
+    cmd: "$(location wayland_scanner) client-header < $(in) > $(out)",
+    suffix: "-client-protocol.h",
+    srcs: [":wayland_extension_protocols"],
     tools: ["wayland_scanner"],
-    tool_files: ["gen_protocol_headers.sh"],
 }
 
+// Generate a library with the protocol files, configured to export the client
+// header files
 cc_library_static {
-    name: "libwayland_protocols_client",
+    name: "libwayland_extension_client_protocols",
     cflags: [
         "-Wall",
         "-Wextra",
@@ -90,9 +66,9 @@ cc_library_static {
         "-fvisibility=hidden"
     ],
     static_libs: ["libwayland_client"],
-    generated_sources: ["wayland_client_protocol_sources"],
-    generated_headers: ["wayland_client_protocol_headers"],
-    export_generated_headers: ["wayland_client_protocol_headers"],
+    generated_sources: ["wayland_extension_protocol_sources"],
+    generated_headers: ["wayland_extension_client_protocol_headers"],
+    export_generated_headers: ["wayland_extension_client_protocol_headers"],
 }
 
 subdirs = ["flinger_headers"]
