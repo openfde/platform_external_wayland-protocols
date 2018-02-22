@@ -140,6 +140,13 @@ func (g *waylandGenModule) GeneratedHeaderDirs() android.Paths {
 	return g.exportedIncludeDirs
 }
 
+// GeneratedDeps implements the genrule.SourceFileGenerator GeneratedDeps
+// method to return the list of files to be used as dependencies when using
+// GeneratedHeaderDirs.
+func (g *waylandGenModule) GeneratedDeps() android.Paths {
+	return g.outputFiles
+}
+
 // Srcs implements the android.SourceFileProducer Srcs method to return the list
 // of source files.
 func (g *waylandGenModule) Srcs() android.Paths {
